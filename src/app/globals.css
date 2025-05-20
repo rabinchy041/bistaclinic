@@ -1,0 +1,166 @@
+body{
+  overflow-X: hidden;
+  height: 100%;
+  width: 100%;
+}
+ul {
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+
+header {
+  position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 99999999999999;
+  background-color: #fff;
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+
+}
+.x
+{
+   position: sticky;
+  left: 0;
+  top: 0;
+  z-index: 99999999999999;
+}
+.e {
+  width: 1500px;
+  height: 600px;
+  border-radius: 15px;
+}
+
+.aa {
+  color: #fff;
+  position: absolute;
+  left: 10%;
+  top: 45%;
+  font-size: 50px;
+  font-weight: 900;
+}
+
+.cc {
+  position: absolute;
+  left: 10%;
+  top: 60%;
+  color: black;
+}
+
+.hero {
+  border-bottom: blue;
+}
+
+.c {
+  width: 1300px;
+  height: 175px;
+  gap: 30px;
+}
+
+.g {
+  height: 60px;
+}
+
+.m {
+  height: 250px;
+  width: 300px;
+  border-radius: 15px;
+}
+
+.b {
+  width: 1400px;
+  height: 175px;
+  gap: 20px;
+}
+
+.d {
+  border-radius: 300%;
+  height: 200%;
+  column-gap: 1%;
+}
+
+.v {
+  width: 1550px;
+  height: 150px;
+
+}
+
+.dd {
+  gap: 20px;
+}
+
+.logo-gap {
+  margin-left: 580px;
+}
+
+.nav-item {
+  font-size: 15px;
+  overflow-y: hidden;
+}
+
+.margin-top {
+  margin-top: 7%;
+}
+
+.fn {
+  font-size: 150%;
+}
+
+.number {
+  font-size: 305%;
+  font-weight: 500;
+}
+
+.imgs {
+  border-radius: 50%;
+  height: 80%;
+}
+
+.img-top {
+  margin-top: 10px;
+}
+
+.girajan {
+  font-size: 30px;
+  margin-left: -50px;
+}
+
+.vv {
+  margin-left: -110px;
+}
+.kk
+{
+  margin-right: 10px;
+
+}
+.r
+{
+ width: 100%;
+ height: 450px;
+ 
+}
+.wrk-exp
+{
+  margin-top: 115px;
+}
+
+.imgs
+{
+  margin-right: 600px;
+}
+.f
+{
+width: 500px;
+height: auto;
+}
+.docter-img
+{
+  border-radius: 10%;
+  
+}
+.bg1
+{
+  background: rgba(89, 146, 237, 0.5);
+}
