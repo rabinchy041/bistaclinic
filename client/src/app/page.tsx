@@ -10,6 +10,7 @@ import Link from "next/link";
 import { CiLocationOn, CiMail, CiTwitter } from "react-icons/ci";
 import { BsTelephone } from "react-icons/bs";
 import { IoLogoInstagram } from "react-icons/io";
+import DoctorPage from "./(user)/Docter/page";
 
 
 
@@ -314,82 +315,9 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-4  mt-3">
-        <div className="container">
-          <div className="row">
-            <h2 className="text-center">
-              <a>Meet Our Expert Doctors</a>
-            </h2>
-            <p className="text-center">
-              Our team of dedicated healthcare professionals committed to
-              providing you with exceptional care.
-            </p>
-            <div className="row d text-center ">
-              <div className="col-lg-3  shadow docter-img">
-                <img
-                  className="w-100 docter-img"
-                  src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-1.2.1&
-                ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=1000"
-                  alt=""
-                />
-                <h2 className="text-dark  mt-3 "> Dr. Rahul Sharma</h2>
-                <p className="text-success">Chief Medical Officer</p>
-                <p className="  text-secondary  mt-3">
-                  Specializing in General Medicine with over 15 years of
-                  experience.
-                </p>
-              </div>
-              <div className="col-lg-3 shadow docter-img ">
-                <img
-                  className="w-100 docter-img"
-                  src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=1000"
-                  alt=""
-                />
-                <h2 className="text-dark mt-3">Dr. Anita Patel</h2>
-                <p className="text-success">Pediatrician</p>
-                <p className="  text-secondary  mt-3">
-                  Dedicated to children's healthcare with specialized training
-                  in neonatology.
-                </p>
-              </div>
-              <div className="col-lg shadow docter-img ">
-                <img
-                  className="w-100 docter-img"
-                  src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=1000"
-                  alt=""
-                />
-                <h2 className="text-dark  mt-3 ">Dr. Bijay Thapa</h2>
-                <p className="text-success ">Orthopedic Surgeon</p>
-                <p className="  text-secondary  mt-3">
-                  Expert in joint replacements and sports medicine with 10+
-                  years experience.
-                </p>
-              </div>
-
-              <div className="col-lg-3 shadow docter-img  ">
-                <img
-                  className="w-100 docter-img"
-                  src="https://images.unsplash.com/photo-1651008376811-b90baee60c1f?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=1000"
-                  alt=""
-                />
-                <h2 className="text-dark mt-3">Dr. Sunita Gurung</h2>
-                <p className="text-success">Gynecologist</p>
-                <p className="  text-secondary  mt-3">
-                  Specialized in women's reproductive health and prenatal care.
-                </p>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-lg text-center">
-                <button className="btn bg-primary  text-white border-box mt-4">
-                  View All Doctor{" "}
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+    {/* Doctor section */}
+     <DoctorPage/>
+  {/* Doctor section */}
        <AppointmentPage/>
 
       <section className="py-3">

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -8,37 +8,44 @@ import LogoutButton from '@/component/LogoutButton';
 import Header from '../(user)/com/Header';
 import Footer from '../(user)/com/Footer';
 
-
 export default function Dashboard() {
-  const stats = {
-    totalUsers: 120,
-    totalDoctors: 15,
-    totalAppointments: 87,
-  };
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalDoctors: 0,
+    totalAppointments: 0,
+  });
 
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem('user');
-    router.push('/auth/adminLogin');
-  };
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/api/admin/stats'); // replace with your API
+        const data = await res.json();
+        setStats(data);
+      } catch (error) {
+        console.error('Failed to fetch stats', error);
+      }
+    };
+
+    fetchStats();
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      
-    <Header/>
+      <Header />
       <div className="flex flex-1">
         {/* Sidebar */}
         <aside className="w-64 bg-white shadow-lg hidden md:block">
           <div className="p-6 text-xl font-bold">Admin Panel</div>
           <nav className="flex flex-col space-y-2 px-4 text-gray-700">
             <Link href="/dashboard" className="hover:text-blue-500">Dashboard</Link>
-            <Link href="/Doctor" className="hover:text-blue-500">Doctors</Link>
+            <Link href="/auth/admin/addDoctors" className="hover:text-blue-500">Doctors</Link>
             <Link href="/auth/admin/appointments" className="hover:text-blue-500">Appointment Scheduler</Link>
             <Link href="/News" className="hover:text-blue-500">News</Link>
           </nav>
           <div className="p-6">
-            <LogoutButton/>
+            <LogoutButton />
           </div>
         </aside>
 
@@ -71,8 +78,7 @@ export default function Dashboard() {
           </div>
         </main>
       </div>
- <Footer/>
-     
+      <Footer />
     </div>
   );
 }
