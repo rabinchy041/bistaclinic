@@ -1,10 +1,8 @@
 import express from 'express';
-import protect from '../middleware/authMiddleware.js';
+import { getAdminStats } from '../controllers/adminController.js';
 
 const router = express.Router();
 
-router.get('/dashboard', protect, (req, res) => {
-  res.json({ message: `Welcome Admin: ${req.admin.username}` });
-});
+router.get('/stats', getAdminStats);
 
 export default router;

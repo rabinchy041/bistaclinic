@@ -1,14 +1,15 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import dbConnect from './database/connection.js';
 import appointmentRoutes from './routes/appointmentRoutes.js';
 import errorMiddleware from './middlewares/errorMiddleware.js';
 import authRoutes from './routes/authRoutes.js';
-
+import doctorRoutes from './routes/doctorRoutes.js';
+import adminRoutes from './routes/adminRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import doctorRoutes from './routes/doctorRoutes.js';
 
 
 dotenv.config(); // Load .env
@@ -25,13 +26,22 @@ const __dirname = path.dirname(__filename);
 
 // Middleware
 app.use(cors());
+app.use(cookieParser());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
+app.use('/api/admin', adminRoutes);
 app.use('/api/doctors', doctorRoutes);
+
+
+
+
+// Serve uploaded images statically
+app.use('/uploads', express.static(path.join(path.resolve(), '/uploads')));
+
 
 
 // Error Handling Middleware

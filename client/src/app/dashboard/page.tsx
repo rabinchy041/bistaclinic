@@ -5,6 +5,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import LogoutButton from '@/component/LogoutButton';
+import Header from '../(user)/com/Header';
+import Footer from '../(user)/com/Footer';
 
 
 export default function Dashboard() {
@@ -24,7 +26,7 @@ export default function Dashboard() {
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
       
-
+    <Header/>
       <div className="flex flex-1">
         {/* Sidebar */}
         <aside className="w-64 bg-white shadow-lg hidden md:block">
@@ -69,7 +71,7 @@ export default function Dashboard() {
           </div>
         </main>
       </div>
-
+ <Footer/>
      
     </div>
   );
