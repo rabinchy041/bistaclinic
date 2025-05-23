@@ -8,6 +8,7 @@ import errorMiddleware from './middlewares/errorMiddleware.js';
 import authRoutes from './routes/authRoutes.js';
 import doctorRoutes from './routes/doctorRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
+import newsRoutes from './routes/newsRoutes.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -29,15 +30,16 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use("/uploads", express.static(path.join("public/uploads")));
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/doctors', doctorRoutes);
+app.use('/api/news', newsRoutes);
 
-
-
+app.use('/api/admin', adminRoutes);
 
 // Serve uploaded images statically
 app.use('/uploads', express.static(path.join(path.resolve(), '/uploads')));

@@ -1,30 +1,27 @@
+// server/src/middleware/authMiddleware.js
 import jwt from 'jsonwebtoken';
-import Admin from '../models/Admin.js';
+import Auth from '../models/authModel.js'; // Or User model
 
-const protect = async (req, res, next) => {
-  let token;
+export const protect = async (req, res, next) => {
+  let token = req.headers.authorization?.split(' ')[1];
 
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
-  ) {
-    try {
-      token = req.headers.authorization.split(' ')[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  if (!token) {
+    return res.status(401).json({ message: 'Not authorized, token missing' });
+  }
 
-      req.admin = await Admin.findById(decoded.id).select('-password');
-      if (!req.admin) {
-        return res.status(401).json({ message: 'Admin not found' });
-      }
-
-      next();
-    } catch (err) {
-      console.error(err);
-      res.status(401).json({ message: 'Not authorized, token failed' });
-    }
-  } else {
-    res.status(401).json({ message: 'Not authorized, no token' });
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await Auth.findById(decoded.id).select('-password');
+    next();
+  } catch (err) {
+    res.status(401).json({ message: 'Invalid token' });
   }
 };
 
-export default protect;
+export const admin = (req, res, next) => {
+  if (req.user && req.user.isAdmin) {
+    next();
+  } else {
+    res.status(403).json({ message: 'Admin access required' });
+  }
+};

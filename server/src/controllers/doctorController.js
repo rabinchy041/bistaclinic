@@ -1,5 +1,7 @@
+// controllers/doctorController.js
 import Doctor from '../models/doctorModel.js';
 
+// Get all doctors (Public)
 export const getDoctors = async (req, res) => {
   try {
     const doctors = await Doctor.find();
@@ -9,19 +11,18 @@ export const getDoctors = async (req, res) => {
   }
 };
 
+// Add a new doctor (Admin only)
 export const addDoctor = async (req, res) => {
   console.log("Request body:", req.body);
   console.log("Request file:", req.file);
 
   const { name, specialization, education, experience, bio } = req.body;
+  const image = req.file ? `/uploads/${req.file.filename}` : '';
 
-  let image = req.file ? `/uploads/${req.file.filename}` : '';
-
-  if (!name.trim() || !specialization.trim() || education.length === 0) {
-  alert("Please fill in Name, Specialization, and add at least one Education.");
-  return;
-}
-
+  // Simple validation
+  if (!name?.trim() || !specialization?.trim() || !education) {
+    return res.status(400).json({ message: "Please provide Name, Specialization, and Education." });
+  }
 
   try {
     const newDoctor = new Doctor({
@@ -41,30 +42,24 @@ export const addDoctor = async (req, res) => {
   }
 };
 
-
-// controllers/doctorController.js
+// Update a doctor (Admin only)
 export const updateDoctor = async (req, res) => {
   try {
     const { id } = req.params;
 
-    // Parse fields from req.body (form-data comes in as strings)
     const updatedFields = {
       name: req.body.name,
       specialization: req.body.specialization,
       experience: req.body.experience,
       bio: req.body.bio,
-      education: req.body.education?.split(",") || [], // Convert CSV string to array
+      education: req.body.education?.split(",").map(e => e.trim()) || [],
     };
 
-    // If an image file was uploaded, update the image path
     if (req.file) {
       updatedFields.image = `/uploads/${req.file.filename}`;
     }
 
-    // Update the doctor
-    const updatedDoctor = await Doctor.findByIdAndUpdate(id, updatedFields, {
-      new: true,
-    });
+    const updatedDoctor = await Doctor.findByIdAndUpdate(id, updatedFields, { new: true });
 
     if (!updatedDoctor) {
       return res.status(404).json({ message: "Doctor not found" });
@@ -77,7 +72,7 @@ export const updateDoctor = async (req, res) => {
   }
 };
 
-
+// Delete a doctor (Admin only)
 export const deleteDoctor = async (req, res) => {
   try {
     const doctor = await Doctor.findByIdAndDelete(req.params.id);
