@@ -6,23 +6,36 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { HomeIcon } from 'lucide-react';
 
 const AdminRegisterPage: React.FC = () => {
   const router = useRouter();
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('admin'); // default role
   const [loading, setLoading] = useState(false);
+
+  const isStrongPassword = (password: string) => {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(password);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+
+    if (!isStrongPassword(password)) {
+      toast.error('Password must be 8+ chars with uppercase, lowercase, number, and symbol');
+      setLoading(false);
+      return;
+    }
 
     try {
       await axios.post('http://localhost:5000/api/auth/register', {
         username,
         email,
         password,
+        role,
       });
 
       toast.success('Registration successful! Please login.');
@@ -39,14 +52,7 @@ const AdminRegisterPage: React.FC = () => {
       <Toaster position="top-right" />
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-2xl border border-blue-100">
         <div className="flex flex-col items-center mb-6">
-          {/* Logo */}
-          <Image
-            src="/logo.png"
-            alt="Hospital Logo"
-            width={64}
-            height={64}
-            className="mb-3"
-          />
+          <Image src="/logo.png" alt="Hospital Logo" width={64} height={64} className="mb-3" />
           <h1 className="text-3xl font-bold text-blue-700">Admin Registration</h1>
           <p className="text-sm text-gray-500 mt-1 text-center">
             Create your account to manage the system
@@ -65,6 +71,7 @@ const AdminRegisterPage: React.FC = () => {
               required
             />
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
             <input
@@ -76,6 +83,7 @@ const AdminRegisterPage: React.FC = () => {
               required
             />
           </div>
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
             <input
@@ -87,6 +95,21 @@ const AdminRegisterPage: React.FC = () => {
               required
             />
           </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Role</label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+              required
+            >
+              <option value="admin">Admin</option>
+             
+              <option value="user">User</option>
+            </select>
+          </div>
+
           <button
             type="submit"
             disabled={loading}
@@ -100,6 +123,13 @@ const AdminRegisterPage: React.FC = () => {
           Already have an account?{' '}
           <Link href="/auth/adminLogin" className="text-blue-600 font-medium hover:underline">
             Login here
+          </Link>
+        </p>
+        <p className="mt-2 text-center text-sm text-gray-600 flex justify-center items-center gap-1">
+          Or go to{' '}
+          <Link href="/dashboard" className="text-blue-600 font-medium hover:underline flex items-center gap-1">
+            <HomeIcon className="h-5 w-5" />
+            Dashboard
           </Link>
         </p>
       </div>

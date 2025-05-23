@@ -1,16 +1,16 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import axios from 'axios';
-import toast, { Toaster } from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import Cookies from 'js-cookie';
+import React, { useState } from "react";
+import axios from "axios";
+import toast, { Toaster } from "react-hot-toast";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import Cookies from "js-cookie";
 
 const AdminLoginPage: React.FC = () => {
   const router = useRouter();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,19 +18,29 @@ const AdminLoginPage: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post("http://localhost:5000/api/auth/login", {
         email,
         password,
       });
-      
-      // Save token in cookie
-Cookies.set('adminToken', response.data.token); // expires in 1 day by default
 
-      localStorage.setItem('adminToken', response.data.token);
-      toast.success('Login successful! Redirecting...');
-      setTimeout(() => router.push('/dashboard'), 1500);
+      const { token, admin } = response.data;
+
+      // ✅ Check if user has admin role
+      if (admin.role !== "admin") {
+        toast.error("Access denied: Admins only!");
+        setLoading(false);
+        return;
+      }
+
+      // ✅ Save token in cookie and localStorage
+      Cookies.set("adminToken", token);
+      localStorage.setItem("adminToken", token);
+      localStorage.setItem("admin", JSON.stringify(admin));
+
+      toast.success("Login successful! Redirecting...");
+      setTimeout(() => router.push("/dashboard"), 1500);
     } catch (error: any) {
-      toast.error(error.response?.data?.message || 'Login failed!');
+      toast.error(error.response?.data?.message || "Login failed!");
     } finally {
       setLoading(false);
     }
@@ -46,7 +56,9 @@ Cookies.set('adminToken', response.data.token); // expires in 1 day by default
         </div>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Email
+            </label>
             <input
               type="email"
               placeholder="admin@example.com"
@@ -58,7 +70,9 @@ Cookies.set('adminToken', response.data.token); // expires in 1 day by default
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Password
+            </label>
             <input
               type="password"
               placeholder="********"
@@ -74,13 +88,13 @@ Cookies.set('adminToken', response.data.token); // expires in 1 day by default
             disabled={loading}
             className="w-full bg-blue-600 hover:bg-blue-700 transition text-white font-medium py-2 rounded-lg"
           >
-            {loading ? 'Logging in...' : 'Login'}
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
-        <p className="mt-5 text-center text-sm text-gray-600">
-          Don’t have an account?{' '}
-          <Link href="/auth/adminRegister" className="text-blue-600 font-medium hover:underline">
-            Register here
+
+        <p className="mt-2 text-center text-sm text-gray-600">
+          <Link href="/" className="text-blue-500 font-medium hover:underline">
+            ← Back to Home
           </Link>
         </p>
       </div>

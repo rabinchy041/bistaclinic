@@ -11,73 +11,28 @@ import { CiLocationOn, CiMail, CiTwitter } from "react-icons/ci";
 import { BsTelephone } from "react-icons/bs";
 import { IoLogoInstagram } from "react-icons/io";
 import DoctorPage from "./(user)/Docter/page";
+import AddNewsPage from "./(user)/News/page";
+import { useEffect, useState } from "react";
+import Header from "./(user)/com/Header";
+import Footer from "./(user)/com/Footer";
 
 
 
 
 export default function Home() {
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsAdminLoggedIn(localStorage.getItem("isAdmin") === "true");
+    }
+  }, []);
+
   return (
     <>
-     <header>
-            {/* Top Contact Bar */}
-            <section className="py-3 bg-primary text-white">
-                <div className="max-w-7xl mx-auto flex flex-col lg:flex-row justify-between items-center px-4 space-y-2 lg:space-y-0">
-                    <h6>+977 9812345678</h6>
-                    <h6>info@bistapoliclinic.com</h6>
-                    <h6>Emergency: +977 9898989898</h6>
-                </div>
-            </section>
+     <Header/>
 
-            {/* Navigation */}
-            <section className="text-dark py-4 shadow">
-                <div className="max-w-7xl mx-auto px-4">
-                    <nav className="flex flex-col lg:flex-row justify-between items-center">
-                        {/* Logo */}
-                        <div className="flex items-center gap-1 text-xl font-bold">
-                            <span className="text-primary">BISTA</span>
-                            <span className="text-gray-700">POLICLINIC</span>
-                        </div>
-
-                        {/* Menu */}
-                        <ul className="flex flex-wrap justify-center lg:justify-end items-center gap-4 mt-4 lg:mt-0 font-medium text-sm">
-                            <li>
-                                <Link className="text-gray-700  text-decoration-none" href="/">Home</Link>
-                            </li>
-                            <li>
-                                <Link className="text-gray-700  text-decoration-none" href="/About">About</Link>
-                            </li>
-                            <li>
-                                <Link className="text-gray-700  text-decoration-none" href="/Services">Services</Link>
-                            </li>
-                            <li>
-                                <Link className="text-gray-700  text-decoration-none" href="/Docter">Docter</Link>
-                            </li>
-                            <li>
-                                <Link className="text-gray-700  text-decoration-none" href="/News">News</Link>
-                            </li>
-                            
-                            <li>
-                                <Link className="text-gray-700  text-decoration-none" href="/Contact">Contact</Link>
-                            </li>
-                            <li>
-                                <Link className="text-decoration-none" href="/Appointment">
-                                    <button className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90 transition">
-                                        Appointment
-                                    </button>
-                                </Link>
-                            </li>
-                            <li>
-                                <Link className="text-decoration-none" href="/auth/adminLogin">
-                                    <button className="bg-primary text-white px-4 py-2 rounded hover:bg-primary/90 transition">
-                                        login
-                                    </button>
-                                </Link>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </section>
-        </header>
+     
       <section className="py-3 ">
         <div className="row">
           <img
@@ -221,79 +176,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-5 mt-5">
-        <div className="row ">
-          <h6 className="text-primary text-center">Our Services</h6>
-          <h2 className="fw-bold text-center mt-2">
-            Comprehensive Healthcare Services
-          </h2>
-          <p className="text-center mt-3 ">
-            We offer a wide range of medical services to meet all your
-            healthcare needs. Our specialized
-            <br /> departments provide comprehensive care with the latest
-            medical technologies.
-          </p>
-        </div>
-        <div className="row ">
-          <div className="col-lg-4 text-light ms-4  p-3  f">
-            <img
-              className="w-100 m "
-              src="https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=500"
-              alt=""
-            />
-            <h2 className="text-dark g-10 m-2">General Medicine</h2>
-            <p className="text-secondary m-2">
-              Comprehensive care for adults including diagnosis, treatment, and
-              prevention of diseases and conditions.
-            </p>
-            <button className="btn text-primary  m-2">
-              Learn More
-              <FaArrowRight className="m-2" />
-            </button>
-          </div>
 
-          <div className="col-lg-4 text-light  p-3 f">
-            <img
-              className="w-100 m "
-              src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=500"
-              alt=""
-            />
-            <h2 className="text-dark g-10">Pediatric Care</h2>
-            <p className="text-secondary">
-              Specialized healthcare for infants, children, and adolescents,
-              focusing on growth and development.
-            </p>
-            <button className="btn text-primary">
-              Learn More
-              <FaArrowRight className="m-2" />
-            </button>
-          </div>
-
-          <div className="col-lg-4 text-light  p-3  f">
-            <img
-              className="w-100 m "
-              src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&h=500"
-              alt=""
-            />
-            <h2 className="text-dark g-10">Dental Care</h2>
-            <p className="text-secondary">
-              Complete oral health services including preventive care,
-              restorative treatments, and cosmetic procedures.
-            </p>
-            <button className="btn text-primary">
-              Learn More
-              <FaArrowRight className="m-2" />
-            </button>
-          </div>
-          <div className="row">
-            <div className="col-lg text-center">
-              <button className="btn bg-primary  text-white border-box mt-4">
-                View All Service{" "}
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+     {/* news section */}
+      <AddNewsPage/>
+      {/* news section */}
 
       <section className="py-4">
         <div className="  row  bg-primary text-center v">
@@ -455,66 +341,7 @@ export default function Home() {
      
 
       {/* Footer Content */}
-      <section className="text-center text-md-start mt-4">
-  <div className="container">
-    <div className="row">
-      {/* About */}
-      <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-        <h6 className="text-uppercase fw-bold">BISTA POLYCLINIC</h6>
-        <hr className="mb-2 mt-0 d-inline-block mx-auto" style={{ width: 60, backgroundColor: '#7c4dff', height: 2 }} />
-        <p>
-          Bista Polyclinic is a premier healthcare institution committed to providing exceptional medical care with a focus on patient comfort and well-being.
-        </p>
-         <section className="d-flex justify-content-center gap-4 p-3 border-bottom">
-        <a href="#" className="text-white fs-4"><FaFacebook /></a>
-        <a href="#" className="text-white fs-4"><CiTwitter /></a>
-        <a href="#" className="text-white fs-4"><IoLogoInstagram /></a>
-        <a href="#" className="text-white fs-4"><FaLinkedin /></a>
-      </section>
-      </div>
-
-      {/* Quick Links */}
-      <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-        <h6 className="text-uppercase fw-bold">Quick Links</h6>
-        <hr className="mb-2 mt-0 d-inline-block mx-auto" style={{ width: 60, backgroundColor: '#7c4dff', height: 2 }} />
-        {['Home', 'About', 'Our Services', 'Our Doctors', 'News & Updates', 'Contact Us'].map((text, index) => (
-          <p key={index}>
-            <a href="#" className="text-white text-decoration-none">{text}</a>
-          </p>
-        ))}
-      </div>
-
-      {/* Contact Info */}
-      <div className="col-md-3 col-lg-3 col-xl-3 mx-auto mb-4">
-        <h6 className="text-uppercase fw-bold">Contact</h6>
-        <hr className="mb-2 mt-0 d-inline-block mx-auto" style={{ width: 60, backgroundColor: '#7c4dff', height: 2 }} />
-        <p><CiLocationOn className="me-2" /> Sisahaniya, Rapti-7, Dang</p>
-        <p><CiMail className="me-2" /> info@bistapoliclinic.com</p>
-        <p><BsTelephone className="me-2" /> +01 234 567 88</p>
-        <p><CiLocationOn className="me-2" /> RMW2+QH9, Sisahaniya 22400</p>
-      </div>
-
-      {/* Opening Hours */}
-      <div className="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
-        <h6 className="text-uppercase fw-bold">Opening Hours</h6>
-        <hr className="mb-2 mt-0 d-inline-block mx-auto" style={{ width: 60, backgroundColor: '#7c4dff', height: 2 }} />
-        <div className="row mb-2">
-          <div className="col-6">Sunday - Friday:</div>
-          <div className="col-6 text-start">8:00 AM - 8:00 PM</div>
-        </div>
-        <div className="row mb-3">
-          <div className="col-6">Saturday:</div>
-          <div className="col-6 text-start">Closed</div>
-        </div>
-        <div className="py-2">
-          <h5 className="mb-1">Emergency Services</h5>
-          <p className="mb-1">Available 24/7</p>
-          <p className="mb-0 fw-bold">Call: +977 1 4123457</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+        <Footer/>
 
 
       {/* Footer Bottom */}

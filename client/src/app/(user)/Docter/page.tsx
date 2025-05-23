@@ -32,7 +32,7 @@ const DoctorPage = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-12 bg-gradient-to-b from-blue-50 to-white min-h-screen">
+    <div className="max-w-7xl mx-auto px-4 py-12 bg-gradient-to-b min-h-screen">
       <h1 className="text-4xl font-extrabold text-center text-blue-800 mb-12">
         👨‍⚕️ Meet Our Doctors
       </h1>
