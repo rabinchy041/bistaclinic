@@ -18,24 +18,21 @@ const AdminLoginPage: React.FC = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", {
+      const { data } = await axios.post("http://localhost:5000/api/auth/login", {
         email,
         password,
       });
 
-      const { token, admin } = response.data;
+      // ✅ Optionally check for admin role
+      // if (data.admin.role !== "admin") {
+      //   toast.error("Access denied: Admins only!");
+      //   setLoading(false);
+      //   return;
+      // }
 
-      // ✅ Check if user has admin role
-      if (admin.role !== "admin") {
-        toast.error("Access denied: Admins only!");
-        setLoading(false);
-        return;
-      }
-
-      // ✅ Save token in cookie and localStorage
-      Cookies.set("adminToken", token);
-      localStorage.setItem("adminToken", token);
-      localStorage.setItem("admin", JSON.stringify(admin));
+      Cookies.set("adminToken", data.token);
+      localStorage.setItem("adminToken", data.token);
+      localStorage.setItem("admin", JSON.stringify(data.admin));
 
       toast.success("Login successful! Redirecting...");
       setTimeout(() => router.push("/dashboard"), 1500);
