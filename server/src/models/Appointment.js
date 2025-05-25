@@ -7,6 +7,7 @@ const appointmentSchema = new mongoose.Schema({
   email: String,
   phone: String,
   preferredDate: String,
+  preferredTime: String,   // store as 'HH:mm'
   department: String,
   message: String,
   status: {

@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
-import Header from '@/app/(user)/com/Header';
-import Footer from '@/app/(user)/com/Footer';
+
+import { Search } from 'lucide-react';
+
 
 
 interface Appointment {
@@ -21,14 +22,37 @@ interface Appointment {
 const AppointmentScheduler = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const fetchAppointments = async () => {
     try {
       const res = await axios.get('http://localhost:5000/api/appointments');
-      const sortedAppointments = res.data.appointments.sort(
-        (a: Appointment, b: Appointment) =>
-          new Date(a.preferredDate).getTime() - new Date(b.preferredDate).getTime()
-      );
+      const allAppointments: Appointment[] = res.data.appointments;
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+
+      const todayAppointments = allAppointments.filter((app) => {
+        const appDate = new Date(app.preferredDate);
+        appDate.setHours(0, 0, 0, 0);
+        return appDate.getTime() === today.getTime();
+      });
+
+      const futureAppointments = allAppointments.filter((app) => {
+        const appDate = new Date(app.preferredDate);
+        appDate.setHours(0, 0, 0, 0);
+        return appDate.getTime() !== today.getTime();
+      });
+
+      const sortedAppointments = [
+        ...todayAppointments,
+        ...futureAppointments.sort(
+          (a, b) =>
+            new Date(a.preferredDate).getTime() -
+            new Date(b.preferredDate).getTime()
+        ),
+      ];
+
       setAppointments(sortedAppointments);
     } catch (err) {
       toast.error('Failed to fetch appointments');
@@ -64,21 +88,43 @@ const AppointmentScheduler = () => {
     }
   };
 
+  const filteredAppointments = appointments.filter((app) =>
+    [app.fullName, app.phone, app.email, app.department]
+      .join(' ')
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+
   useEffect(() => {
     fetchAppointments();
   }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
-      <Header />
+      
       <Toaster />
 
       <main className="flex-1 p-6">
-        <h1 className="text-2xl font-bold text-blue-700 mb-6">🩺 Appointment Scheduler</h1>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4 px-2">
+          <h1 className="text-3xl font-semibold text-blue-800 tracking-tight">
+            🩺 Appointment Scheduler
+          </h1>
+
+          <div className="relative w-full sm:w-96">
+            <input
+              type="text"
+              placeholder="Search by name, phone, email, or department..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full py-2 pl-11 pr-4 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-400 focus:outline-none transition duration-200"
+            />
+            <Search className="absolute left-3 top-2.5 text-gray-500 w-5 h-5" />
+          </div>
+        </div>
 
         {loading ? (
           <p>Loading...</p>
-        ) : appointments.length === 0 ? (
+        ) : filteredAppointments.length === 0 ? (
           <p className="text-gray-600">No appointments found.</p>
         ) : (
           <div className="overflow-x-auto bg-white shadow-md rounded">
@@ -97,7 +143,7 @@ const AppointmentScheduler = () => {
                 </tr>
               </thead>
               <tbody>
-                {appointments.map((app, idx) => (
+                {filteredAppointments.map((app, idx) => (
                   <tr key={app._id} className="border-t text-center">
                     <td className="px-4 py-2">{idx + 1}</td>
                     <td className="px-4 py-2">{app.fullName}</td>
@@ -139,7 +185,7 @@ const AppointmentScheduler = () => {
         )}
       </main>
 
-      <Footer />
+     
     </div>
   );
 };

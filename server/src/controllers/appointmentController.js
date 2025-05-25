@@ -17,6 +17,8 @@ export const getAppointments = async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 };
+
+
 export const deleteAppointment = async (req, res) => {
   try {
     const appointment = await Appointment.findByIdAndDelete(req.params.id);
@@ -53,4 +55,25 @@ export const updateAppointmentStatus = async (req, res) => {
   }
 };
 
+// Count appointments for a specific date and hour
+export const countAppointmentsByDateAndHour = async (req, res) => {
+  const { date, hour } = req.query;
+
+  if (!date || !hour) {
+    return res.status(400).json({ message: 'Missing date or hour parameter' });
+  }
+
+  try {
+    // Match appointments where preferredDate is the exact date
+    // and preferredTime starts with the given hour, e.g. '14' matches '14:00', '14:30'
+    const count = await Appointment.countDocuments({
+      preferredDate: date,
+      preferredTime: { $regex: `^${hour}:` },
+    });
+
+    res.status(200).json({ count });
+  } catch (error) {
+    res.status(500).json({ message: 'Error counting appointments', error });
+  }
+};
 

@@ -1,13 +1,21 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import LogoutButton from '@/component/LogoutButton';
-import Header from '../(user)/com/Header';
-import Footer from '../(user)/com/Footer';
-import { UserPlus } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import LogoutButton from "@/component/LogoutButton";
+
+import Cookies from "js-cookie";
+import { jwtDecode } from "jwt-decode";
+
+
+interface TokenPayload {
+  id: string;
+  role: string;
+  iat?: number;
+  exp?: number;
+}
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -16,60 +24,97 @@ export default function Dashboard() {
     totalAppointments: 0,
   });
 
-  const [username, setUsername] = useState('Admin');
+  const [username, setUsername] = useState("Admin");
   const router = useRouter();
 
   useEffect(() => {
-    // Fetch dashboard stats from backend
-    const fetchStats = async () => {
+    const fetchAdminData = async () => {
       try {
-        const res = await fetch('http://localhost:5000/api/admin/stats');
+        const token = Cookies.get("adminToken");
+        if (!token) {
+          console.log("No token found");
+          return;
+        }
+
+        const decoded = jwtDecode<TokenPayload>(token);
+        const adminId = decoded.id;
+
+        const res = await fetch(
+          `http://localhost:5000/api/auth/get-admin/${adminId}`
+        );
         const data = await res.json();
-        setStats(data);
+
+        if (data.username) {
+          setUsername(data.username);
+        }
       } catch (error) {
-        console.error('Failed to fetch stats', error);
+        console.error("Error fetching admin data:", error);
       }
     };
 
-    // Load admin username from localStorage
-    const storedAuth = localStorage.getItem('admin');
-    if (storedAuth) {
-      const adminData = JSON.parse(storedAuth);
-      setUsername(adminData.username || 'Admin');
-    }
+    const fetchStats = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/admin/stats");
+        const data = await res.json();
+        setStats(data);
+      } catch (error) {
+        console.error("Failed to fetch stats", error);
+      }
+    };
 
+    fetchAdminData();
     fetchStats();
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      <Header />
+    <div className="flex flex-col  bg-gray-50">
+      
       <div className="flex flex-1">
         {/* Sidebar */}
-        <aside className="w-64 bg-white shadow-lg hidden md:block">
-          <div className="p-6 text-xl font-bold">Admin Panel</div>
-          <nav className="flex flex-col space-y-2 px-4 text-gray-700">
-            <Link href="/dashboard" className="hover:text-blue-500">
-              Dashboard
-            </Link>
-            <Link href="/auth/admin/addDoctors" className="hover:text-blue-500">
-              Doctors
-            </Link>
-            <Link href="/auth/admin/appointments" className="hover:text-blue-500">
-              Appointment Scheduler
-            </Link>
-            <Link href="/auth/admin/addNews" className="hover:text-blue-500">
-              News
-            </Link>
-            <Link
-              href="/auth/adminRegister"
-              className="flex items-center gap-2 hover:text-blue-500"
-            >
-              <UserPlus size={18} />
-              Register Admin
-            </Link>
-          </nav>
-          <div className="p-6">
+        <aside className="w-64 bg-gradient-to-b from-blue-100 to-blue-50 shadow-lg hidden md:flex flex-col justify-between">
+          <div>
+            {/* Panel Title */}
+            <div className="px-6 py-4 border-b border-blue-200">
+              <h2 className="text-2xl font-bold text-blue-800">Admin Panel</h2>
+            </div>
+
+            {/* Navigation Links */}
+            <nav className="mt-4 px-4 space-y-3 text-sm text-black font-medium">
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg text-black text-decoration-none hover:bg-blue-200 transition-all duration-200"
+              >
+                📊 Dashboard
+              </Link>
+              <Link
+                href="/auth/admin/addDoctors"
+                className="flex items-center gap-2 px-3 py-2 text-black text-decoration-none rounded-lg hover:bg-blue-200 transition-all duration-200"
+              >
+                🩺 Doctors
+              </Link>
+              <Link
+                href="/auth/admin/appointments"
+                className="flex items-center gap-2 px-3 py-2 text-black text-decoration-none rounded-lg hover:bg-blue-200 transition-all duration-200"
+              >
+                📅 Appointment Scheduler
+              </Link>
+              <Link
+                href="/auth/admin/addNews"
+                className="flex items-center gap-2 px-3 py-2 text-black text-decoration-none rounded-lg hover:bg-blue-200 transition-all duration-200"
+              >
+                📰 News
+              </Link>
+              <Link
+                href="/auth/adminRegister"
+                className="flex items-center gap-2 px-3 py-2 text-black text-decoration-none  rounded-lg hover:bg-blue-200 transition-all duration-200"
+              >
+                ➕ Register Admin
+              </Link>
+            </nav>
+          </div>
+
+          {/* Logout Section */}
+          <div className="px-6 py-4 border-t border-blue-200">
             <LogoutButton />
           </div>
         </aside>
@@ -77,7 +122,9 @@ export default function Dashboard() {
         {/* Main Content */}
         <main className="flex-1 p-6">
           <div className="mb-6">
-            <h1 className="text-2xl font-semibold text-gray-800">Welcome, {username} 👋</h1>
+            <h1 className="text-2xl font-semibold text-gray-800">
+              Welcome, {username} 👋
+            </h1>
             <p className="text-gray-500">Here’s what’s happening today.</p>
           </div>
 
@@ -103,7 +150,7 @@ export default function Dashboard() {
           </div>
         </main>
       </div>
-      <Footer />
+      
     </div>
   );
 }

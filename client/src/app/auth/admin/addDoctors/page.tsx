@@ -3,9 +3,10 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import Header from "@/app/(user)/com/Header";
-import Footer from "@/app/(user)/com/Footer";
+
+
 import { Button } from "@/components/ui/button";
+
 
 interface Doctor {
   _id: string;
@@ -138,7 +139,7 @@ const DoctorPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white ">
       <Toaster position="top-center" />
-      <Header />
+   
 
       <main className="max-w-7xl mx-auto px-4 py-10 flex-grow">
         <h1 className="text-4xl font-bold mb-10 text-center text-blue-800">
@@ -258,7 +259,7 @@ const DoctorPage = () => {
               <img
                 src={`http://localhost:5000${doc.image}`}
                 alt={doc.name}
-                className="w-full h-[280px] object-cover rounded-t-xl"
+                className="img-fluid doctor-img"
               />
               <div className="p-4 flex flex-col flex-grow">
                 <h3 className="text-xl font-semibold text-gray-900">{doc.name}</h3>
@@ -297,7 +298,7 @@ const DoctorPage = () => {
         </div>
       </main>
 
-      <Footer />
+      
     </div>
   );
 };

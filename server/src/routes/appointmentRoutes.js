@@ -1,5 +1,6 @@
 import express from 'express';
 import {
+  countAppointmentsByDateAndHour,
   createAppointment,
   deleteAppointment,
   getAppointments,
@@ -12,6 +13,6 @@ router.post('/', createAppointment);
 router.get('/', getAppointments);
 router.delete('/:id', deleteAppointment);
 router.patch('/:id/status', updateAppointmentStatus); 
-
+router.get('/count', countAppointmentsByDateAndHour);
 
 export default router;

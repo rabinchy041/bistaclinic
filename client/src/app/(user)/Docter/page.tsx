@@ -33,20 +33,24 @@ const DoctorPage = () => {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-12 bg-gradient-to-b min-h-screen">
-      <h1 className="text-4xl font-extrabold text-center text-blue-800 mb-12">
+      <h2 className="text-4xl font-extrabold text-center text-blue-800 mb-12">
         👨‍⚕️ Meet Our Doctors
-      </h1>
+      </h2>
+       <p className="mb-5 text-center">
+         Our team of dedicated healthcare professionals committed to providing you with exceptional care.
+        </p>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 m-2 p-2 mt-4">
+      <div className="row gap-4">
         {doctors.map((doc) => (
           <div
             key={doc._id}
-            className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition duration-300 overflow-hidden flex flex-col"
+            className="col-12 col-sm-6 col-lg-3 rounded Card shadow-lg"
           >
+            <div className="card1 Doctors_card">
             <img
               src={`http://localhost:5000${doc.image}`}
               alt={doc.name}
-              className="w-full h-[280px] object-cover"
+              className="img-fluid doctor-img py-2 rounded-2xl"
             />
 
             <div className="p-4 flex flex-col flex-grow">
@@ -71,6 +75,7 @@ const DoctorPage = () => {
                   Learn More
                 </Button>
               </Link>
+            </div>
             </div>
           </div>
         ))}

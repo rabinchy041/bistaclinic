@@ -3,8 +3,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import Header from "@/app/(user)/com/Header";
-import Footer from "@/app/(user)/com/Footer";
+
 import { Button } from "@/components/ui/button";
 
 interface News {
@@ -108,63 +107,62 @@ const AddNewsPage = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-white">
       <Toaster position="top-center" />
-      <Header />
+     
 
-      <main className="max-w-5xl mx-auto px-4 py-10 flex-grow">
-        <h1 className="text-4xl font-bold mb-10 text-center text-yellow-700">
+      <main className="max-w-6xl mx-auto px-4 py-12 flex-grow">
+        <h1 className="text-4xl font-bold mb-12 text-center text-indigo-700">
           📰 {editingId ? "Edit News" : "Add News"}
         </h1>
 
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-xl shadow-xl p-8 grid grid-cols-1 md:grid-cols-2 gap-6 mb-16"
+          className="bg-white rounded-2xl shadow-lg p-10 space-y-6 mb-16"
         >
-          <input
-            type="text"
-            placeholder="Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg"
-            required
-          />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <input
+              type="text"
+              placeholder="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
 
-          <input
-            type="text"
-            placeholder="Author"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg"
-            required
-          />
+            <input
+              type="text"
+              placeholder="Author"
+              value={author}
+              onChange={(e) => setAuthor(e.target.value)}
+              className="p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
 
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="p-3 border border-gray-300 rounded-lg bg-white"
-            required={!editingId}
-          />
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="p-4 border border-gray-300 rounded-lg bg-white"
+              required={!editingId}
+            />
 
-          <textarea
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg col-span-1 md:col-span-2 h-28 resize-none"
-            required
-          />
+            <textarea
+              placeholder="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="p-4 border border-gray-300 rounded-lg col-span-1 md:col-span-2 h-32 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
-          <div className="flex gap-4 col-span-1 md:col-span-2">
-            <Button
-              type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold"
-            >
+          <div className="flex flex-wrap gap-4 pt-4">
+            <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg">
               {editingId ? "Update News" : "Submit News"}
             </Button>
             {editingId && (
               <Button
                 type="button"
                 onClick={resetForm}
-                className="bg-gray-500 hover:bg-gray-600 text-white py-3 px-6 rounded-lg font-semibold"
+                className="bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg"
               >
                 Cancel
               </Button>
@@ -172,32 +170,35 @@ const AddNewsPage = () => {
           </div>
         </form>
 
-        <h2 className="text-2xl font-semibold mb-6 text-gray-800">📢 Latest News</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <h2 className="text-3xl font-semibold mb-8 text-gray-800 text-center">
+          📢 Latest News
+        </h2>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {newsList.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition"
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all overflow-hidden"
             >
               <img
                 src={`http://localhost:5000${item.image}`}
                 alt={item.title}
                 className="w-full h-48 object-cover"
               />
-              <div className="p-4">
-                <h3 className="text-xl font-bold">{item.title}</h3>
-                <p className="text-sm text-gray-600 mb-2">By {item.author}</p>
+              <div className="p-5">
+                <h3 className="text-lg font-semibold text-gray-800">{item.title}</h3>
+                <p className="text-sm text-gray-500 mb-1">By {item.author}</p>
                 <p className="text-sm text-gray-700 line-clamp-3">{item.description}</p>
                 <div className="flex justify-between mt-4">
                   <Button
                     onClick={() => handleEdit(item)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded-lg"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm"
                   >
                     Edit
                   </Button>
                   <button
                     onClick={() => handleDelete(item._id)}
-                    className="bg-red-500 hover:bg-red-600 text-white text-sm px-3 py-1 rounded-lg"
+                    className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm"
                   >
                     Delete
                   </button>
@@ -208,7 +209,7 @@ const AddNewsPage = () => {
         </div>
       </main>
 
-      <Footer />
+    
     </div>
   );
 };

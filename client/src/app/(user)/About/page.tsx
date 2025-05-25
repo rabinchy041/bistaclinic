@@ -1,35 +1,77 @@
-'use client'
 import React from 'react'
-import { VscChromeMinimize } from "react-icons/vsc";
+import { slides, welcomeData } from '../Pages/Javascript'
 
-function page() {
+function Page() {
   return (
     <>
-      <section className='py-4'>
-  <div className="container">
-    <div className="row">
-      <div className="col-lg-6 shadow">
-        <img className='w-100' src="https://media.istockphoto.com/id/457344351/photo/nurse-station.jpg?s=612x612&w=0&k=20&c=V_CyyX8pRAXDSKQ7hA9o3IsuNZfhB4GIk4uHSW0qWX4=" alt="" />
-
-
-      </div>
-
-      <div className="col-lg-6">
-        <h4>Welcome to Bista Polyclinic</h4>
-        
-        <h2 className='text-start text-primary '><VscChromeMinimize /></h2>
-        <p className=' py-1 text-secondary'>Bista Polyclinic is a premier healthcare institution committed to providing exceptional medical care with a focus on patient comfort and well-being. Our state-of-the-art facilities and cutting-edge technology ensure that you receive the best possible treatment.</p>
-             <p className=' py-1 text-secondary'>With a team of highly skilled medical professionals specializing in various fields, we offer comprehensive healthcare services from preventive care to advanced treatments. Our patient-centered approach prioritizes your health needs while ensuring a supportive and healing environment.</p>
-
-             <button className='btn bg-primary text-white'>Learn More About Us</button>
-
-      </div>
-    </div>
-  </div>
-</section>
-
+      <section>
+             <div className="container py-5">
+               <div className="row align-items-center bg-white shadow rounded-4 p-4 g-3 justify-content-between ">
+                 {/* Image Section */}
+                 <div className="col-lg-6 mb-4 mb-lg-0">
+                   {/* <img
+                     src={welcomeData.image}
+                     className="card-img-top img-fluid rounded"
+                   /> */}
+                   <div
+                     id="carouselAutoplay"
+                     className="carousel slide"
+                     data-bs-ride="carousel"
+                   >
+                     <div className="carousel-inner">
+                       {slides.map((slide, index) => (
+                         <div
+                           key={slide.id}
+                           className={`carousel-item ${index === 0 ? "active" : ""}`}
+                         >
+                           <img
+                             src={slide.image}
+                             className="d-block w-100"
+                             alt={slide.alt}
+                           />
+                           <div className="carousel-caption d-none d-md-block">
+                             <h5>{slide.caption}</h5>
+                           </div>
+                         </div>
+                       ))}
+                     </div>
+                     <button
+                       className="carousel-control-prev"
+                       type="button"
+                       data-bs-target="#carouselAutoplay"
+                       data-bs-slide="prev"
+                     >
+                       <span className="carousel-control-prev-icon" />
+                     </button>
+                     <button
+                       className="carousel-control-next"
+                       type="button"
+                       data-bs-target="#carouselAutoplay"
+                       data-bs-slide="next"
+                     >
+                       <span className="carousel-control-next-icon" />
+                     </button>
+                   </div>
+                 </div>
+     
+                 {/* Text Section */}
+                 {/* <div className="col-lg-1 hidden">
+                 </div> */}
+                 <div className="col-lg-5">
+                   <h2 className="fw-bold">{welcomeData.title}</h2>
+                   <hr />
+                   <p className="text-muted">{welcomeData.intro}</p>
+                   <p className="text-muted">{welcomeData.details}</p>
+                   <button className="btn btn-primary mt-3 px-4">
+                     {welcomeData.buttonText}
+                   </button>
+                 </div>
+               </div>
+             </div>
+           </section>
+     
     </>
   )
 }
 
-export default page
+export default Page

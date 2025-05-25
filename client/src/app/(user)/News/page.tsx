@@ -30,43 +30,41 @@ const AddNewsPage = () => {
     }
   };
 
-  const handle = (id: string) => {
-    console.log("Learn more clicked for ID:", id);
-    // You can replace this with navigation like: router.push(`/news/${id}`)
-  };
-
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b ">
+    <div className="min-h-screen bg-gray-100">
       <Toaster position="top-center" />
 
-      <main className="max-w-5xl mx-auto px-4 py-10 flex-grow">
-        <h2 className="text-4xl font-bold mb-10 text-center">
-          📢 Health Tips & News
-        </h2>
+      {/* Header Section */}
+      <section className="text-center py-10">
+        <h2 className="text-4xl font-bold text-gray-800">📢 Health Tips & News</h2>
+        <p className="text-gray-600 mt-2 max-w-2xl mx-auto">
+          Stay informed with the latest health news, medical breakthroughs, and wellness tips from our experts.
+        </p>
+      </section>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-5">
+      {/* News Cards */}
+      <main className="max-w-7xl mx-auto px-4 pb-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {newsList.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition"
+              className="bg-white rounded-xl shadow-sm hover:shadow-lg transition duration-300 flex flex-col overflow-hidden News_img"
             >
               <img
                 src={`http://localhost:5000${item.image}`}
                 alt={item.title}
-                className="w-full h-48 object-cover"
+                className="w-full  object-cover"
               />
-              <div className="p-4">
-                <h3 className="text-xl font-bold">{item.title}</h3>
-                <p className="text-sm text-gray-600 mb-2">By {item.author}</p>
-                <p className="text-sm text-gray-700 line-clamp-3">
-                  {item.description}
-                </p>
-                <div className="flex justify-end mt-4">
+              <div className="p-1 flex flex-col flex-grow">
+                <small className="text-gray-500 mb-2">By {item.author}</small>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">{item.title}</h3>
+                <p className="text-gray-700 mb-4 flex-grow line-clamp-3">{item.description}</p>
+                <div className="mt-auto">
                   <Link
                     href={`/news/${item._id}`}
-                    className="bg-blue-600 hover:bg-blue-700 text-decoration-none text-white text-sm px-4 py-2 rounded-lg font-semibold"
+                    className="inline-block bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-md font-semibold transition"
                   >
-                    Learn More
+                    Read More
                   </Link>
                 </div>
               </div>

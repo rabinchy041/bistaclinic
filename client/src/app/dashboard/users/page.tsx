@@ -6,9 +6,8 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import LogoutButton from '@/component/LogoutButton';
 
-import { UserPlus } from 'lucide-react';
-import Header from '@/app/(user)/com/Header';
-import Footer from '@/app/(user)/com/Footer';
+
+
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -38,14 +37,14 @@ export default function Dashboard() {
       }
     };
 
-    // Load admin username from localStorage
-    const storedAuth = localStorage.getItem('admin');
+    // Load user username from localStorage
+    const storedAuth = localStorage.getItem('user');
     if (storedAuth) {
       try {
-        const adminData = JSON.parse(storedAuth);
-        setUsername(adminData.username || 'Admin');
+        const user = JSON.parse(storedAuth);
+        setUsername(user.username || 'User');
       } catch {
-        setUsername('Admin');
+        setUsername('User');
       }
     }
 
@@ -53,31 +52,53 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
-      <Header />
+    <div className="flex flex-col  bg-gray-50">
       <div className="flex flex-1">
         {/* Sidebar */}
-        <aside className="w-64 bg-white shadow-lg hidden md:block">
-          <div className="p-6 text-xl font-bold">Users Panel</div>
-          <nav className="flex flex-col space-y-2 px-4 text-gray-700">
-            <Link href="/dashboard" className="hover:text-blue-500">
-              Dashboard
-            </Link>
-            <Link href="/Docter" className="hover:text-blue-500">
-              Doctors
-            </Link>
-            <Link href="/auth/admin/appointments" className="hover:text-blue-500">
-              Appointment Scheduler
-            </Link>
-            <Link href="/News" className="hover:text-blue-500">
-              News
-            </Link>
-            <Link href="/auth/adminRegister" className="flex items-center gap-2 hover:text-blue-500">
-              <UserPlus size={18} />
-              Register Admin
-            </Link>
-          </nav>
-          <div className="p-6">
+        <aside className="w-64 bg-gradient-to-b from-blue-100 to-blue-50 shadow-lg hidden md:flex flex-col justify-between">
+          <div>
+            {/* Panel Title */}
+            <div className="px-6 py-4 border-b border-blue-200">
+              <h2 className="text-2xl font-bold text-blue-800">User Panel</h2>
+            </div>
+
+            {/* Navigation Links */}
+            <nav className="mt-4 px-4 space-y-3 text-sm text-black font-medium">
+              <Link
+                href="/dashboard"
+                className="flex items-center gap-2 px-3 py-2 rounded-lg text-black text-decoration-none hover:bg-blue-200 transition-all duration-200"
+              >
+                📊 Dashboard
+              </Link>
+              <Link
+                href="/Docter"
+                className="flex items-center gap-2 px-3 py-2 text-black text-decoration-none rounded-lg hover:bg-blue-200 transition-all duration-200"
+              >
+                🩺 Doctors
+              </Link>
+              <Link
+                href="/auth/admin/appointments"
+                className="flex items-center gap-2 px-3 py-2 text-black text-decoration-none rounded-lg hover:bg-blue-200 transition-all duration-200"
+              >
+                📅 Appointment Scheduler
+              </Link>
+              <Link
+                href="/News"
+                className="flex items-center gap-2 px-3 py-2 text-black text-decoration-none rounded-lg hover:bg-blue-200 transition-all duration-200"
+              >
+                📰 News
+              </Link>
+              {/* <Link
+                href="/auth/adminRegister"
+                className="flex items-center gap-2 px-3 py-2 text-black text-decoration-none  rounded-lg hover:bg-blue-200 transition-all duration-200"
+              >
+                ➕ Register Admin
+              </Link> */}
+            </nav>
+          </div>
+
+          {/* Logout Section */}
+          <div className="px-6 py-4 border-t border-blue-200">
             <LogoutButton />
           </div>
         </aside>
@@ -117,7 +138,7 @@ export default function Dashboard() {
           )}
         </main>
       </div>
-      <Footer />
+      
     </div>
   );
 }

@@ -32,7 +32,11 @@ const AdminLoginPage: React.FC = () => {
 
       Cookies.set("adminToken", data.token);
       localStorage.setItem("adminToken", data.token);
-      localStorage.setItem("admin", JSON.stringify(data.admin));
+      // localStorage.setItem("admin", JSON.stringify(data.admin));
+      localStorage.setItem('user',JSON.stringify({
+         username: data.username, 
+         role: data.role })
+      );
 
       toast.success("Login successful! Redirecting...");
       setTimeout(() => router.push("/dashboard"), 1500);
